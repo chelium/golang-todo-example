@@ -10,11 +10,11 @@ import (
 
 // TodoService describes the service.
 type TodoService interface {
-	Get(ctx context.Context) (t []io.Todo, erroror error)
-	Add(ctx context.Context, todo io.Todo) (t io.Todo, erroror error)
-	SetComplete(ctx context.Context, id string) (erroror error)
-	RemoveComplete(ctx context.Context, id string) (erroror error)
-	Delete(ctx context.Context, id string) (erroror error)
+	Get(ctx context.Context) (t []io.Todo, error error)
+	Add(ctx context.Context, todo io.Todo) (t io.Todo, error error)
+	SetComplete(ctx context.Context, id string) (error error)
+	RemoveComplete(ctx context.Context, id string) (error error)
+	Delete(ctx context.Context, id string) (error error)
 }
 
 type basicTodoService struct{}
@@ -38,7 +38,7 @@ func (b *basicTodoService) Add(ctx context.Context, todo io.Todo) (t io.Todo, er
 	defer session.Close()
 	c := session.DB("todo_app").C("todos")
 	error = c.Insert(&todo)
-	return t, error
+	return todo, error
 }
 func (b *basicTodoService) SetComplete(ctx context.Context, id string) (error error) {
 	session, err := db.GetMongoSession()
