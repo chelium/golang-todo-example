@@ -3,39 +3,45 @@ package service
 import (
 	"context"
 
+	"github.com/chelium/golang-todo-example/todo/pkg/db"
 	"github.com/chelium/golang-todo-example/todo/pkg/io"
 )
 
 // TodoService describes the service.
 type TodoService interface {
-	Get(ctx context.Context) (t []io.Todo, err error)
-	Add(ctx context.Context, todo io.Todo) (t io.Todo, err error)
-	SetComplete(ctx context.Context, id string) (err error)
-	RemoveComplete(ctx context.Context, id string) (err error)
-	Delete(ctx context.Context, id string) (err error)
+	Get(ctx context.Context) (t []io.Todo, erroror error)
+	Add(ctx context.Context, todo io.Todo) (t io.Todo, erroror error)
+	SetComplete(ctx context.Context, id string) (erroror error)
+	RemoveComplete(ctx context.Context, id string) (erroror error)
+	Delete(ctx context.Context, id string) (erroror error)
 }
 
 type basicTodoService struct{}
 
-func (b *basicTodoService) Get(ctx context.Context) (t []io.Todo, err error) {
-	// TODO implement the business logic of Get
-	return t, err
+func (b *basicTodoService) Get(ctx context.Context) (t []io.Todo, error error) {
+	session, err := db.GetMongoSession()
+	if err != nil {
+		return t, err
+	}
+	defer session.Close()
+	c := session.DB("todo_app").C("todos")
+	error = c.Find(nil).All(&t)
+	return t, error
 }
-func (b *basicTodoService) Add(ctx context.Context, todo io.Todo) (t io.Todo, err error) {
-	// TODO implement the business logic of Add
-	return t, err
+func (b *basicTodoService) Add(ctx context.Context, todo io.Todo) (t io.Todo, error error) {
+	return t, error
 }
-func (b *basicTodoService) SetComplete(ctx context.Context, id string) (err error) {
+func (b *basicTodoService) SetComplete(ctx context.Context, id string) (error error) {
 	// TODO implement the business logic of SetComplete
-	return err
+	return error
 }
-func (b *basicTodoService) RemoveComplete(ctx context.Context, id string) (err error) {
+func (b *basicTodoService) RemoveComplete(ctx context.Context, id string) (error error) {
 	// TODO implement the business logic of RemoveComplete
-	return err
+	return error
 }
-func (b *basicTodoService) Delete(ctx context.Context, id string) (err error) {
+func (b *basicTodoService) Delete(ctx context.Context, id string) (error error) {
 	// TODO implement the business logic of Delete
-	return err
+	return error
 }
 
 // NewBasicTodoService returns a naive, stateless implementation of TodoService.
