@@ -41,12 +41,22 @@ func (b *basicTodoService) Add(ctx context.Context, todo io.Todo) (t io.Todo, er
 	return t, error
 }
 func (b *basicTodoService) SetComplete(ctx context.Context, id string) (error error) {
-	// TODO implement the business logic of SetComplete
-	return error
+	session, err := db.GetMongoSession()
+	if err != nil {
+		return err
+	}
+	defer session.Close()
+	c := session.DB("todo_app").C("todos")
+	return c.Update(bson.M{"_id:": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"complete": true}})
 }
 func (b *basicTodoService) RemoveComplete(ctx context.Context, id string) (error error) {
-	// TODO implement the business logic of RemoveComplete
-	return error
+	session, err := db.GetMongoSession()
+	if err != nil {
+		return err
+	}
+	defer session.Close()
+	c := session.DB("todo_app").C("todos")
+	return c.Update(bson.M{"_id:": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"complete": false}})
 }
 func (b *basicTodoService) Delete(ctx context.Context, id string) (error error) {
 	// TODO implement the business logic of Delete

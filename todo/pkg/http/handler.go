@@ -66,7 +66,11 @@ func encodeAddResponse(ctx context.Context, w http1.ResponseWriter, response int
 
 // makeSetCompleteHandler creates the handler logic
 func makeSetCompleteHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("POST").Path("/set-complete").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.SetCompleteEndpoint, decodeSetCompleteRequest, encodeSetCompleteResponse, options...)))
+	m.Methods("PUT", "OPTIONS").Path("/set-complete").Handler(
+		handlers.CORS(
+			handlers.AllowedMethods([]string{"PUT"}),
+			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
+			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.SetCompleteEndpoint, decodeSetCompleteRequest, encodeSetCompleteResponse, options...)))
 }
 
 // decodeSetCompleteResponse  is a transport/http.DecodeRequestFunc that decodes a
@@ -91,7 +95,11 @@ func encodeSetCompleteResponse(ctx context.Context, w http1.ResponseWriter, resp
 
 // makeRemoveCompleteHandler creates the handler logic
 func makeRemoveCompleteHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("POST").Path("/remove-complete").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.RemoveCompleteEndpoint, decodeRemoveCompleteRequest, encodeRemoveCompleteResponse, options...)))
+	m.Methods("PUT", "OPTIONS").Path("/remove-complete").Handler(
+		handlers.CORS(
+			handlers.AllowedMethods([]string{"PUT"}),
+			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
+			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.RemoveCompleteEndpoint, decodeRemoveCompleteRequest, encodeRemoveCompleteResponse, options...)))
 }
 
 // decodeRemoveCompleteResponse  is a transport/http.DecodeRequestFunc that decodes a
