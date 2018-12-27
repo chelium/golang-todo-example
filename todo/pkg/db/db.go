@@ -5,7 +5,7 @@ import (
 )
 
 var mgoSession *mgo.Session
-var mongoConnStr = "mongodb:27017"
+var mongoConnStr = "127.0.0.1:27017"
 
 // GetMongoSession creates a new session if mgoSession is nil i.e there is no active mongo session.
 // If there is an active mongo session it will return a Clone
