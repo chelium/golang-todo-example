@@ -5,6 +5,7 @@ import (
 
 	"github.com/chelium/golang-todo-example/todo/pkg/db"
 	"github.com/chelium/golang-todo-example/todo/pkg/io"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // TodoService describes the service.
@@ -29,6 +30,14 @@ func (b *basicTodoService) Get(ctx context.Context) (t []io.Todo, error error) {
 	return t, error
 }
 func (b *basicTodoService) Add(ctx context.Context, todo io.Todo) (t io.Todo, error error) {
+	todo.Id = bson.NewObjectId()
+	session, err := db.GetMongoSession()
+	if err != nil {
+		return t, err
+	}
+	defer session.Close()
+	c := session.DB("todo_app").C("todos")
+	error = c.Insert(&todo)
 	return t, error
 }
 func (b *basicTodoService) SetComplete(ctx context.Context, id string) (error error) {

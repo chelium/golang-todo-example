@@ -37,7 +37,11 @@ func encodeGetResponse(ctx context.Context, w http1.ResponseWriter, response int
 
 // makeAddHandler creates the handler logic
 func makeAddHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("POST").Path("/add").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.AddEndpoint, decodeAddRequest, encodeAddResponse, options...)))
+	m.Methods("POST", "OPTIONS").Path("/add").Handler(
+		handlers.CORS(
+			handlers.AllowedMethods([]string{"POST"}),
+			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
+			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.AddEndpoint, decodeAddRequest, encodeAddResponse, options...)))
 }
 
 // decodeAddResponse  is a transport/http.DecodeRequestFunc that decodes a
