@@ -1,0 +1,5 @@
+package: github.com/chelium/golang-todo-example
+import:
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
