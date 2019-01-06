@@ -13,7 +13,11 @@ import (
 
 // makeGetHandler creates the handler logic
 func makeGetHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
-	m.Methods("GET").Path("/get").Handler(handlers.CORS(handlers.AllowedMethods([]string{"GET"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.GetEndpoint, decodeGetRequest, encodeGetResponse, options...)))
+	m.Methods("GET").Path("/").Handler(
+		handlers.CORS(
+			handlers.AllowedMethods([]string{"GET"}),
+			handlers.AllowedOrigins([]string{"*"}),
+		)(http.NewServer(endpoints.GetEndpoint, decodeGetRequest, encodeGetResponse, options...)))
 }
 
 // decodeGetResponse  is a transport/http.DecodeRequestFunc that decodes a
@@ -70,7 +74,9 @@ func makeSetCompleteHandler(m *mux.Router, endpoints endpoint.Endpoints, options
 		handlers.CORS(
 			handlers.AllowedMethods([]string{"PUT"}),
 			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
-			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.SetCompleteEndpoint, decodeSetCompleteRequest, encodeSetCompleteResponse, options...)))
+			handlers.AllowedOrigins([]string{"*"}),
+		)(http.NewServer(
+			endpoints.SetCompleteEndpoint, decodeSetCompleteRequest, encodeSetCompleteResponse, options...)))
 }
 
 // decodeSetCompleteResponse  is a transport/http.DecodeRequestFunc that decodes a
@@ -99,7 +105,9 @@ func makeRemoveCompleteHandler(m *mux.Router, endpoints endpoint.Endpoints, opti
 		handlers.CORS(
 			handlers.AllowedMethods([]string{"PUT"}),
 			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
-			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.RemoveCompleteEndpoint, decodeRemoveCompleteRequest, encodeRemoveCompleteResponse, options...)))
+			handlers.AllowedOrigins([]string{"*"}),
+		)(http.NewServer(
+			endpoints.RemoveCompleteEndpoint, decodeRemoveCompleteRequest, encodeRemoveCompleteResponse, options...)))
 }
 
 // decodeRemoveCompleteResponse  is a transport/http.DecodeRequestFunc that decodes a
@@ -128,7 +136,9 @@ func makeDeleteHandler(m *mux.Router, endpoints endpoint.Endpoints, options []ht
 		handlers.CORS(
 			handlers.AllowedMethods([]string{"DELETE"}),
 			handlers.AllowedHeaders([]string{"Content-Type", "Content-Length"}),
-			handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.DeleteEndpoint, decodeDeleteRequest, encodeDeleteResponse, options...)))
+			handlers.AllowedOrigins([]string{"*"}),
+		)(http.NewServer(
+			endpoints.DeleteEndpoint, decodeDeleteRequest, encodeDeleteResponse, options...)))
 }
 
 // decodeDeleteResponse  is a transport/http.DecodeRequestFunc that decodes a

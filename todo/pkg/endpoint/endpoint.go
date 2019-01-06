@@ -1,7 +1,7 @@
 package endpoint
 
 import (
-	"context"
+	context "context"
 	io "github.com/chelium/golang-todo-example/todo/pkg/io"
 	service "github.com/chelium/golang-todo-example/todo/pkg/service"
 	endpoint "github.com/go-kit/kit/endpoint"

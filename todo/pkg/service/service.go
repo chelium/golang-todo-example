@@ -47,7 +47,7 @@ func (b *basicTodoService) SetComplete(ctx context.Context, id string) (error er
 	}
 	defer session.Close()
 	c := session.DB("todo_app").C("todos")
-	return c.Update(bson.M{"_id:": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"complete": true}})
+	return c.UpdateId(bson.ObjectIdHex(id), bson.M{"$set": bson.M{"complete": true}})
 }
 func (b *basicTodoService) RemoveComplete(ctx context.Context, id string) (error error) {
 	session, err := db.GetMongoSession()
@@ -56,7 +56,7 @@ func (b *basicTodoService) RemoveComplete(ctx context.Context, id string) (error
 	}
 	defer session.Close()
 	c := session.DB("todo_app").C("todos")
-	return c.Update(bson.M{"_id:": bson.ObjectIdHex(id)}, bson.M{"$set": bson.M{"complete": false}})
+	return c.UpdateId(bson.ObjectIdHex(id), bson.M{"$set": bson.M{"complete": false}})
 }
 func (b *basicTodoService) Delete(ctx context.Context, id string) (error error) {
 	session, err := db.GetMongoSession()
